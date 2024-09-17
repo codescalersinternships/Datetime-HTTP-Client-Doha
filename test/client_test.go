@@ -33,7 +33,7 @@ func TestClient(t *testing.T){
 
 		client := pkg.NewClient(mconfig)
 
-		expect:= &MockClient{
+		expect:= MockClient{
 			url: "http://localhost:8090/datetime",
 		}
 

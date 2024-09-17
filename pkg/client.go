@@ -28,7 +28,7 @@ var (
 type options func(*Client)
 
 
-func (c *Client) WithPort(url string) options{
+func (c *Client) WithURL(url string) options{
 	return func (*Client)  {
 		c.Url = url
 	}

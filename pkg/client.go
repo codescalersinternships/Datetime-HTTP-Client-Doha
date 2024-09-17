@@ -11,13 +11,6 @@ import (
 )
 
 
-type Config struct {
-	Port string
-	Endpoint string
-}
-
-
-
 type Client struct {
 	Client *http.Client
 	Url string
@@ -26,51 +19,48 @@ type Client struct {
 
 
 var (
-	Timeout = 2 * time.Second
-
-	UrlDefault  = "http://localhost:%s/%s"
-	
+	Timeout = 2 * time.Second	
 	PortDefault = "8080"
-	
 	EndpointDefault = "datetime"
+	UrlDefault = "http://localhost:8080/datetime"
 )
 
+type options func(*Client)
 
 
-func SetConfigDefualt() Config{
-	return Config{
-		Port: PortDefault,
-		Endpoint: EndpointDefault,
+func (c *Client) WithPort(url string) options{
+	return func (*Client)  {
+		c.Url = url
 	}
 }
 
 
-func LoadConfigFromENV() Config{
+func (c *Client) LoadConfigFromENV() {
 	err := godotenv.Load("../.env")
 
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
-		return Config{}
+		return 
 	}
 
 	port := os.Getenv("PORT")
 	endpoint := os.Getenv("ENDPOINT")
 
-	return Config{
-		Port: port,
-		Endpoint: endpoint,
-	}
-	
+	c.Url = fmt.Sprintf("http://localhost:%s/%s",port,endpoint)
 }
 
 
-func NewClient(config Config) *Client{
+func NewClient(opt ...options) *Client{
 
 	client :=  &Client{
 		Client : &http.Client{
 			Timeout: Timeout,
 		},
-		Url: fmt.Sprintf(UrlDefault, config.Port, config.Endpoint),
+		Url: UrlDefault,
+	}
+
+	for _, o := range opt {
+		o(client)
 	}
 
 	return client

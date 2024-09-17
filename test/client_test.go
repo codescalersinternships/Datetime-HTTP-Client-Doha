@@ -17,9 +17,8 @@ type MockClient struct {
 func TestClient(t *testing.T){
 
 	t.Run("default client configs", func(t *testing.T) {
-		mconfig := pkg.SetConfigDefualt()
 
-		client := pkg.NewClient(mconfig)
+		client := pkg.NewClient()
 
 		expect :=  MockClient{
 			url: "http://localhost:8080/datetime",
@@ -29,9 +28,9 @@ func TestClient(t *testing.T){
 	})
 
 	t.Run("client with .env configs", func(t *testing.T) {
-		mconfig := pkg.LoadConfigFromENV()
 
-		client := pkg.NewClient(mconfig)
+		client := pkg.NewClient()
+		client.LoadConfigFromENV()
 
 		expect:= MockClient{
 			url: "http://localhost:8090/datetime",

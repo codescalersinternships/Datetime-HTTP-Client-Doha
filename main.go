@@ -1,25 +1,23 @@
 package main
 
-import (
-	"fmt"
-	"net/http"
+// import (
+// 	"fmt"
+// 	"net/http"
 
-	"github.com/dohaelsawy/codescalers/datetime-client/pkg"
-)
-
-
+// 	"github.com/dohaelsawy/codescalers/datetime-client/pkg"
+// )
 
 
-func main(){
-
-	// req, _ := http.NewRequest("GET","http://localhost:8080/datetime",nil)
 
 
-	config := pkg.SetConfigDefualt()
-	c := pkg.NewClient(config)
-	http.NewServeMux()
+// func main(){
 
-	data , _ := c.GetResponse()
+// 	// req, _ := http.NewRequest("GET","http://localhost:8080/datetime",nil)
 
-	fmt.Println(data)
-}
+
+// 	http.NewServeMux()
+
+// 	data , _ := c.GetResponse()
+
+// 	fmt.Println(data)
+// }

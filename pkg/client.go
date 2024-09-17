@@ -12,58 +12,66 @@ import (
 
 
 type Config struct {
-	port string
-	endpoint string
+	Port string
+	Endpoint string
 }
+
 
 
 type Client struct {
-	client *http.Client
-	url string
+	Client *http.Client
+	Url string
 }
+
+
 
 var (
 	Timeout = 2 * time.Second
 
-	UrlDefualt  = "http://localhost:%s/%s"
+	UrlDefault  = "http://localhost:%s/%s"
 	
 	PortDefault = "8080"
 	
 	EndpointDefault = "datetime"
 )
 
-func SetConfigDefualt() *Config{
-	return &Config{
-		port: PortDefault,
-		endpoint: EndpointDefault,
+
+
+func SetConfigDefualt() Config{
+	return Config{
+		Port: PortDefault,
+		Endpoint: EndpointDefault,
 	}
 }
 
 
-func LoadConfigFromENV() *Config{
-	err := godotenv.Load(".env")
+func LoadConfigFromENV() Config{
+	err := godotenv.Load("../.env")
 
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
-		return &Config{}
+		return Config{}
 	}
 
 	port := os.Getenv("PORT")
 	endpoint := os.Getenv("ENDPOINT")
 
-	return &Config{
-		port: port,
-		endpoint: endpoint,
+	return Config{
+		Port: port,
+		Endpoint: endpoint,
 	}
 	
 }
 
 
-func NewCLient(config Config) *Client{
-	return &Client{
-		client : &http.Client{
+func NewClient(config Config) *Client{
+
+	client :=  &Client{
+		Client : &http.Client{
 			Timeout: Timeout,
 		},
-		url: fmt.Sprintf(UrlDefualt, config.port, config.endpoint),
+		Url: fmt.Sprintf(UrlDefault, config.Port, config.Endpoint),
 	}
+
+	return client
 }

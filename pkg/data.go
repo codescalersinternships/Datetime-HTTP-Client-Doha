@@ -16,7 +16,7 @@ var (
 )
 
 type DataTimeResponse struct {
-	DatewaTime string
+	DatewTime string  `json:"datewtime"`
 }
 
 func (c *Client) GetResponse() (DataTimeResponse, error) {
@@ -74,7 +74,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 		return datetime, nil
 	}
 
-	datetime.DatewaTime = string(body)
+	datetime.DatewTime = string(body)
 
 	return datetime, nil
 }

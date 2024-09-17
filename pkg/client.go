@@ -10,50 +10,44 @@ import (
 	"github.com/joho/godotenv"
 )
 
-
 type Client struct {
 	Client *http.Client
-	Url string
+	Url    string
 }
 
-
-
 var (
-	Timeout = 2 * time.Second	
-	PortDefault = "8080"
+	Timeout         = 2 * time.Second
+	PortDefault     = "8080"
 	EndpointDefault = "datetime"
-	UrlDefault = "http://localhost:8080/datetime"
+	UrlDefault      = "http://localhost:8080/datetime"
 )
 
-type options func(*Client)
+type options func(c *Client)
 
-
-func (c *Client) WithURL(url string) options{
-	return func (*Client)  {
+func WithURL(url string) options {
+	return func(c *Client) {
 		c.Url = url
 	}
 }
-
 
 func (c *Client) LoadConfigFromENV() {
 	err := godotenv.Load("../.env")
 
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
-		return 
+		return
 	}
 
 	port := os.Getenv("PORT")
 	endpoint := os.Getenv("ENDPOINT")
 
-	c.Url = fmt.Sprintf("http://localhost:%s/%s",port,endpoint)
+	c.Url = fmt.Sprintf("http://localhost:%s%s", port, endpoint)
 }
 
+func NewClient(opt ...options) *Client {
 
-func NewClient(opt ...options) *Client{
-
-	client :=  &Client{
-		Client : &http.Client{
+	client := &Client{
+		Client: &http.Client{
 			Timeout: Timeout,
 		},
 		Url: UrlDefault,

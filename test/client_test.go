@@ -7,20 +7,17 @@ import (
 	"github.com/go-playground/assert/v2"
 )
 
-
 type MockClient struct {
 	url string
 }
 
-
-
-func TestClient(t *testing.T){
+func TestClient(t *testing.T) {
 
 	t.Run("default client configs", func(t *testing.T) {
 
 		client := pkg.NewClient()
 
-		expect :=  MockClient{
+		expect := MockClient{
 			url: "http://localhost:8080/datetime",
 		}
 
@@ -32,7 +29,7 @@ func TestClient(t *testing.T){
 		client := pkg.NewClient()
 		client.LoadConfigFromENV()
 
-		expect:= MockClient{
+		expect := MockClient{
 			url: "http://localhost:8090/datetime",
 		}
 

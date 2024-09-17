@@ -66,4 +66,15 @@ func TestGetResponse(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+
+	t.Run("invalid url", func(t *testing.T) {
+
+		client := pkg.NewClient(pkg.WithURL("http://localhost:8080/"))
+
+		_, err := client.GetResponse()
+
+		assert.NotEqual(t,nil,err)
+		
+	})
+
 }

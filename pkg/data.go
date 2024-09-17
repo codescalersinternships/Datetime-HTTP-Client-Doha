@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ErrInternalServer     = fmt.Errorf("http Status Internal Server Error %d", http.StatusInternalServerError)
+	// ErrInternalServer     = fmt.Errorf("http Status Internal Server Error %d", http.StatusInternalServerError)
 	ErrNotSupportedHeader = fmt.Errorf("support only text and json format")
 )
 
@@ -34,7 +34,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	res, err := c.Client.Do(req)
 
 	if err != nil {
-		log.Fatalf("error from get response function %s", err)
+		// log.Fatalf("error from get response function %s", err)
 		return DataTimeResponse{}, err
 	}
 	defer res.Body.Close()
@@ -42,21 +42,21 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	// response part ------------
 
 	if res.StatusCode != http.StatusOK {
-		log.Fatal(ErrInternalServer)
-		return DataTimeResponse{}, ErrInternalServer
+		// log.Fatal(res.StatusCode)
+		return DataTimeResponse{}, fmt.Errorf("Status %d Error", res.StatusCode)
 	}
 
 	header := res.Header.Get("Content-Type")
 
 	if !strings.Contains(header, "text/plain") && !strings.Contains(header, "application/json") {
-		log.Fatal(ErrNotSupportedHeader)
+		// log.Fatal(ErrNotSupportedHeader)
 		return DataTimeResponse{}, ErrNotSupportedHeader
 	}
 
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		log.Fatalf("error from get response function %s", err)
+		// log.Fatalf("error from get response function %s", err)
 		return DataTimeResponse{}, err
 	}
 
@@ -67,7 +67,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 		err = json.Unmarshal(body, &datetime)
 
 		if err != nil {
-			log.Fatalf("error from get response function %s", err)
+			// log.Fatalf("error from get response function %s", err)
 			return DataTimeResponse{}, err
 		}
 

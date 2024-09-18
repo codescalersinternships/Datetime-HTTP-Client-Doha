@@ -1,10 +1,10 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 
 	pkg "github.com/dohaelsawy/codescalers/datetime-client/pkg"
-	"github.com/stretchr/testify/assert"
 )
 
 type MockClient struct {
@@ -21,7 +21,9 @@ func TestClient(t *testing.T) {
 			url: "http://localhost:8080/datetime",
 		}
 
-		assert.Equal(t, expect.url, client.Url)
+		if !reflect.DeepEqual(expect.url,client.Url){
+			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
+		}
 	})
 
 	t.Run("client with .env configs", func(t *testing.T) {
@@ -33,7 +35,12 @@ func TestClient(t *testing.T) {
 			url: "http://localhost:8090/datetime",
 		}
 
-		assert.Equal(t, expect.url, client.Url)
-		assert.NoError(t,err)
+		if !reflect.DeepEqual(expect.url,client.Url){
+			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
+		}
+		
+		if err != nil {
+			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v",err)
+		}
 	})
 }

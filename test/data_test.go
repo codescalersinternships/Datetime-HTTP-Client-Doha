@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 	"time"
 
 	"github.com/dohaelsawy/codescalers/datetime-client/pkg"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestGetResponse(t *testing.T) {
@@ -31,8 +31,13 @@ func TestGetResponse(t *testing.T) {
 
 		expected := time.Now().Format(time.UnixDate)
 
-		assert.Equal(t, expected, data.DatewTime)
-		assert.NoError(t, err)
+		if !reflect.DeepEqual(expected,data.DatewTime){
+			t.Errorf("errorrrrrrr, shoud your response %s equal to mine %s", data.DatewTime, expected)
+		}
+		
+		if err != nil {
+			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v",err)
+		}
 
 	})
 
@@ -62,8 +67,13 @@ func TestGetResponse(t *testing.T) {
 			DatewTime: time.Now().UTC().Format(time.UnixDate),
 		}
 
-		assert.Equal(t, expected.DatewTime, data.DatewTime)
-		assert.NoError(t, err)
+		if !reflect.DeepEqual(expected.DatewTime,data.DatewTime){
+			t.Errorf("errorrrrrrr, shoud your response %s equal to mine %s", data.DatewTime , expected.DatewTime)
+		}
+		
+		if err != nil {
+			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v",err)
+		}
 	})
 
 

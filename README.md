@@ -24,6 +24,7 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
        ```golang
        make build // build a binary file
        ./client -endpoint=/datatime -port=8090
+       client.SetClientUrl(endpoint, port) // to set port and end point into client url
        ```
 - 3. gets your data from desire url
      ```golang

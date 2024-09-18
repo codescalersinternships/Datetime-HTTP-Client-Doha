@@ -30,18 +30,20 @@ func WithURL(url string) options {
 	}
 }
 
-func (c *Client) LoadConfigFromENV() {
+func (c *Client) LoadConfigFromENV() error{
 	err := godotenv.Load("../.env")
 
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
-		return
+		return err
 	}
 
 	port := os.Getenv("PORT")
 	endpoint := os.Getenv("ENDPOINT")
 
 	c.Url = fmt.Sprintf("http://localhost:%s%s", port, endpoint)
+
+	return nil
 }
 
 func NewClient(opt ...options) *Client {

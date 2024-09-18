@@ -15,7 +15,7 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
 ```golang
    client := pkg.NewClient() // default url-> http://localhost:8080/datatime
 ```
-- 2. to set your values you have 2 options:
+- 2. to set your values you have 3 options:
      - to load from env file
        ```golang
        err := client.LoadConfigFromENV()
@@ -26,6 +26,10 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
        ./client -endpoint=/datatime -port=8090
        client.SetClientUrl(endpoint, port) // to set port and end point into client url
        ```
+      - to pass your url with client declaration
+        ```golang
+        client := pkg.NewClient(pkg.WithURL(YourUrl))
+        ``` 
 - 3. gets your data from desire url
      ```golang
      data, err := client.GetResponse()

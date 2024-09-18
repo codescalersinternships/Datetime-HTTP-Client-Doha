@@ -2,9 +2,9 @@
 Create an HTTP client in Go that consumes the datetime server APIs implemented in the previous project. https://github.com/codescalersinternships/home/issues/284
 
 ## Installation 
-- 1. Clone project
+- 1. Download project
 ```golang
-   git clone https://github.com/codescalersinternships/Datetime-Server-Doha.git
+   git get https://github.com/codescalersinternships/Datetime-Server-Doha.git
 ```
 - 2. import package :
 ```golang

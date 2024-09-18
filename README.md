@@ -29,4 +29,14 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
      ```golang
      data, err := client.GetResponse()
      ```
-       
+
+### test
+- to run all tests
+```golang
+  go test v ./...
+```
+### format
+- format all files inside project
+```golang
+gofmt -w .
+```

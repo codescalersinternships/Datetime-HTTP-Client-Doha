@@ -20,6 +20,11 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
        ```golang
        err := client.LoadConfigFromENV()
        ```
+       use following env valraibles:
+       ```
+       PORT=8090
+       ENDPOINT=/datetime
+       ```
      - to pass your flag values in binary file
        ```golang
        make build // build a binary file

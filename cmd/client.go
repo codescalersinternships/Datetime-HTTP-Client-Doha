@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -21,7 +22,16 @@ func main() {
 
 	logrus.Info("System is starting")
 
-	client := pkg.NewClient(pkg.WithURL("http://localhost:8080/datetime"))
+	var port string 
+	var endpoint string
+
+	flag.StringVar(&port, "port", "8080", "the number of url port")
+	flag.StringVar(&endpoint, "endpoint", "/datatime","the end point in url")
+	flag.Parse()
+
+	client := pkg.NewClient()
+
+	client.SetClientUrl(endpoint, port)
 
 	data , err := client.GetResponse()
 

@@ -30,6 +30,10 @@ func WithURL(url string) options {
 	}
 }
 
+func makeUrl(endpoint, port string) string{
+	return fmt.Sprintf("http://localhost:%s%s", port, endpoint)
+}
+
 func (c *Client) LoadConfigFromENV() error{
 	err := godotenv.Load("../.env")
 
@@ -41,7 +45,7 @@ func (c *Client) LoadConfigFromENV() error{
 	port := os.Getenv("PORT")
 	endpoint := os.Getenv("ENDPOINT")
 
-	c.Url = fmt.Sprintf("http://localhost:%s%s", port, endpoint)
+	c.Url = makeUrl(endpoint, port)
 
 	logrus.Println("create client with load env file")
 
@@ -64,4 +68,12 @@ func NewClient(opt ...options) *Client {
 	logrus.Printf("new client created %v\n",client)
 
 	return client
+}
+
+
+func (c *Client) SetClientUrl(endpoint, port string){
+
+	c.Url = makeUrl(endpoint, port)
+
+	logrus.Println("create client url from flag parser")
 }

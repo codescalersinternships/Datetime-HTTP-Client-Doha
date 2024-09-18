@@ -62,7 +62,7 @@ func TestGetResponse(t *testing.T) {
 			DatewTime: time.Now().UTC().Format(time.UnixDate),
 		}
 
-		assert.Equal(t, expected, data.DatewTime)
+		assert.Equal(t, expected.DatewTime, data.DatewTime)
 		assert.NoError(t, err)
 	})
 

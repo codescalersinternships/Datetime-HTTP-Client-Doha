@@ -2,12 +2,12 @@ package pkg
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 )
 
 type Client struct {
@@ -34,7 +34,7 @@ func (c *Client) LoadConfigFromENV() error{
 	err := godotenv.Load("../.env")
 
 	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
+		logrus.Errorf("error while loading .env file. Err: %s", err)
 		return err
 	}
 
@@ -42,6 +42,8 @@ func (c *Client) LoadConfigFromENV() error{
 	endpoint := os.Getenv("ENDPOINT")
 
 	c.Url = fmt.Sprintf("http://localhost:%s%s", port, endpoint)
+
+	logrus.Println("create client with load env file")
 
 	return nil
 }
@@ -58,6 +60,8 @@ func NewClient(opt ...options) *Client {
 	for _, o := range opt {
 		o(client)
 	}
+
+	logrus.Printf("new client created %v\n",client)
 
 	return client
 }

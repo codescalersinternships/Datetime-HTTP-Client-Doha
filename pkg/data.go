@@ -5,14 +5,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 var (
-	// ErrInternalServer     = fmt.Errorf("http Status Internal Server Error %d", http.StatusInternalServerError)
-	ErrNotSupportedHeader = fmt.Errorf("support only text and json format")
+	ErrInternalServer     = fmt.Errorf("http Status Internal Server Error %d \n", http.StatusInternalServerError)
+	ErrNotFound     = fmt.Errorf("http Not Found Error %d\n", http.StatusNotFound)
+	ErrNotSupportedHeader = fmt.Errorf("support only text and json format\n")
+	
 )
 
 type DataTimeResponse struct {
@@ -24,7 +27,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	req, err := http.NewRequestWithContext(context.Background(), "GET", c.Url, nil)
 
 	if err != nil {
-		log.Fatalf("error from get response function %s", err)
+		logrus.Errorf("from http.NewRequestWithContext function %s\n", err)
 		return DataTimeResponse{}, err
 	}
 
@@ -34,7 +37,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	res, err := c.Client.Do(req)
 
 	if err != nil {
-		// log.Fatalf("error from get response function %s", err)
+		logrus.Errorf("from Client.Do function %s\n", err)
 		return DataTimeResponse{}, err
 	}
 	defer res.Body.Close()
@@ -42,21 +45,21 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	// response part ------------
 
 	if res.StatusCode != http.StatusOK {
-		// log.Fatal(res.StatusCode)
-		return DataTimeResponse{}, fmt.Errorf("Status %d Error", res.StatusCode)
+		logrus.Errorf("Response status is not 200 %d",res.StatusCode)
+		return DataTimeResponse{},fmt.Errorf(fmt.Sprintf("status %d Error",res.StatusCode))
 	}
 
 	header := res.Header.Get("Content-Type")
 
 	if !strings.Contains(header, "text/plain") && !strings.Contains(header, "application/json") {
-		// log.Fatal(ErrNotSupportedHeader)
+		logrus.Error(ErrNotSupportedHeader)
 		return DataTimeResponse{}, ErrNotSupportedHeader
 	}
 
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		// log.Fatalf("error from get response function %s", err)
+		logrus.Errorf("can't read response body. Err = %s", err)
 		return DataTimeResponse{}, err
 	}
 
@@ -67,7 +70,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 		err = json.Unmarshal(body, &datetime)
 
 		if err != nil {
-			// log.Fatalf("error from get response function %s", err)
+			logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
 			return DataTimeResponse{}, err
 		}
 

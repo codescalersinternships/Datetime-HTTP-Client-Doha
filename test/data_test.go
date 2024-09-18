@@ -73,7 +73,9 @@ func TestGetResponse(t *testing.T) {
 
 		_, err := client.GetResponse()
 
-		assert.NotEqual(t,nil,err)
+		if err == nil {
+			t.Errorf("expect error %v, found nil", err)
+		}
 		
 	})
 

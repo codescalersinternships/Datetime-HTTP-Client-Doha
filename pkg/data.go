@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,10 +13,6 @@ import (
 )
 
 var (
-	ErrInternalServer     = fmt.Errorf("http Status Internal Server Error %d \n", http.StatusInternalServerError)
-	ErrNotFound           = fmt.Errorf("http Not Found Error %d\n", http.StatusNotFound)
-	ErrNotSupportedHeader = fmt.Errorf("support only text and json format\n")
-
 	ConstBackoffTime = 4 * time.Second
 )
 
@@ -25,13 +20,29 @@ type DataTimeResponse struct {
 	DatewTime string `json:"datewtime"`
 }
 
+type ErrResponse struct {
+	Err        error `json:"error"`
+	StatusCode int   `json:"statuscode"`
+}
+
+func (e ErrResponse) Error() string {
+	return fmt.Sprintf("error is %s , and http status code is %d", e.Err, e.StatusCode)
+}
+
+func AssignErrorResponse(err error, statuscode int) error {
+	return ErrResponse{
+		Err:        err,
+		StatusCode: statuscode,
+	}
+}
+
 func (c *Client) GetResponse() (DataTimeResponse, error) {
 
-	req, err := http.NewRequestWithContext(context.Background(), "GET", c.Url, nil)
+	req, err := http.NewRequest("GET", c.Url, nil)
 
 	if err != nil {
 		logrus.Errorf("from http.NewRequestWithContext function %s\n", err)
-		return DataTimeResponse{}, err
+		return DataTimeResponse{}, AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
 	req.Header.Add("Accept", "text/plain")
@@ -51,34 +62,30 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 	res, err := backoff.RetryNotifyWithData(operation, b, notify)
 
 	if err != nil {
-		logrus.Fatalf("error after retrying: %v", err)
-	}
-
-	if err != nil {
 		logrus.Errorf("from Client.Do function %s\n", err)
-		return DataTimeResponse{}, err
+		return DataTimeResponse{}, AssignErrorResponse(err, req.Response.StatusCode)
 	}
 	defer res.Body.Close()
 
 	// response part ------------
 
 	if res.StatusCode != http.StatusOK {
-		logrus.Errorf("Response status is not 200 %d", res.StatusCode)
-		return DataTimeResponse{}, fmt.Errorf(fmt.Sprintf("status %d Error", res.StatusCode))
+		logrus.Errorf("Response status is not 200, it is %v", res.StatusCode)
+		return DataTimeResponse{}, AssignErrorResponse(fmt.Errorf("unsupported header format"), res.StatusCode)
 	}
 
 	header := res.Header.Get("Content-Type")
 
 	if !strings.Contains(header, "text/plain") && !strings.Contains(header, "application/json") {
-		logrus.Error(ErrNotSupportedHeader)
-		return DataTimeResponse{}, ErrNotSupportedHeader
+		logrus.Errorf("unsupported header type, status code is  %d", res.StatusCode)
+		return DataTimeResponse{}, AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		logrus.Errorf("can't read response body. Err = %s", err)
-		return DataTimeResponse{}, err
+		return DataTimeResponse{}, AssignErrorResponse(err, req.Response.StatusCode)
 	}
 
 	var datetime DataTimeResponse
@@ -89,7 +96,7 @@ func (c *Client) GetResponse() (DataTimeResponse, error) {
 
 		if err != nil {
 			logrus.Errorf("unable to unmarchal body to json. Err = %s", err)
-			return DataTimeResponse{}, err
+			return DataTimeResponse{}, AssignErrorResponse(err, req.Response.StatusCode)
 		}
 
 		return datetime, nil

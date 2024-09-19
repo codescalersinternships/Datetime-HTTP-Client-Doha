@@ -19,7 +19,7 @@ func TestGetResponse(t *testing.T) {
 
 				w.WriteHeader(http.StatusOK)
 
-				w.Write([]byte(time.Now().Format(time.UnixDate)))
+				_ , _ = w.Write([]byte(time.Now().Format(time.UnixDate)))
 			}),
 		)
 

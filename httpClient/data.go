@@ -17,11 +17,10 @@ const (
 	ConstBackoffTime = 4 * time.Second
 )
 
-// DataTimeResponse represent date and time response 
+// DataTimeResponse represent date and time response
 type DataTimeResponse struct {
 	DatewTime string `json:"datewtime"`
 }
-
 
 // ErrResponse represent error response
 type ErrResponse struct {
@@ -29,21 +28,18 @@ type ErrResponse struct {
 	StatusCode int   `json:"statuscode"`
 }
 
-
-// Error implement custom error types 
+// Error implement custom error types
 func (e ErrResponse) Error() string {
 	return fmt.Sprintf("error is %s , and http status code is %d", e.Err, e.StatusCode)
 }
 
-
-// AssignErrorResponse takes error and status code and return an ErrResponse type 
+// AssignErrorResponse takes error and status code and return an ErrResponse type
 func AssignErrorResponse(err error, statuscode int) error {
 	return ErrResponse{
 		Err:        err,
 		StatusCode: statuscode,
 	}
 }
-
 
 // GetResponse retrive DataTimeResponse and error if exist
 func (c *Client) GetResponse() (DataTimeResponse, error) {

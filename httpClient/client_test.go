@@ -19,7 +19,7 @@ func TestClient(t *testing.T) {
 			url: "http://localhost:8080/datetime",
 		}
 
-		if !reflect.DeepEqual(expect.url,client.Url){
+		if !reflect.DeepEqual(expect.url, client.Url) {
 			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
 		}
 	})
@@ -33,12 +33,12 @@ func TestClient(t *testing.T) {
 			url: "http://localhost:8090/datetime",
 		}
 
-		if !reflect.DeepEqual(expect.url,client.Url){
+		if !reflect.DeepEqual(expect.url, client.Url) {
 			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
 		}
-		
+
 		if err != nil {
-			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v",err)
+			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v", err)
 		}
 	})
 }

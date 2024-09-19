@@ -1,4 +1,4 @@
-package main
+package httpClient
 
 import (
 	"encoding/json"
@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dohaelsawy/codescalers/datetime-client/pkg"
 )
 
 func TestGetResponse(t *testing.T) {
@@ -25,7 +24,7 @@ func TestGetResponse(t *testing.T) {
 			}),
 		)
 
-		client := pkg.NewClient(pkg.WithURL(mockserver.URL))
+		client := NewClient(WithURL(mockserver.URL))
 
 		data, err := client.GetResponse()
 
@@ -49,7 +48,7 @@ func TestGetResponse(t *testing.T) {
 
 				enc := json.NewEncoder(w)
 
-				err := enc.Encode(&pkg.DataTimeResponse{
+				err := enc.Encode(&DataTimeResponse{
 					DatewTime: time.Now().UTC().Format(time.UnixDate),
 				})
 
@@ -59,11 +58,11 @@ func TestGetResponse(t *testing.T) {
 			}),
 		)
 
-		client := pkg.NewClient(pkg.WithURL(mockserver.URL))
+		client := NewClient(WithURL(mockserver.URL))
 
 		data, err := client.GetResponse()
 
-		expected := &pkg.DataTimeResponse{
+		expected := &DataTimeResponse{
 			DatewTime: time.Now().UTC().Format(time.UnixDate),
 		}
 
@@ -79,7 +78,7 @@ func TestGetResponse(t *testing.T) {
 
 	t.Run("invalid url", func(t *testing.T) {
 
-		client := pkg.NewClient(pkg.WithURL("http://localhost:8080/"))
+		client := NewClient(WithURL("http://localhost:8080/"))
 
 		_, err := client.GetResponse()
 

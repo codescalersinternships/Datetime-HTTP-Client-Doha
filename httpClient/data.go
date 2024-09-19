@@ -1,4 +1,4 @@
-package pkg
+package httpClient
 
 import (
 	"encoding/json"
@@ -12,23 +12,31 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var (
+// Time takes for backoff to wait
+const (
 	ConstBackoffTime = 4 * time.Second
 )
 
+// DataTimeResponse represent date and time response 
 type DataTimeResponse struct {
 	DatewTime string `json:"datewtime"`
 }
 
+
+// ErrResponse represent error response
 type ErrResponse struct {
 	Err        error `json:"error"`
 	StatusCode int   `json:"statuscode"`
 }
 
+
+// Error implement custom error types 
 func (e ErrResponse) Error() string {
 	return fmt.Sprintf("error is %s , and http status code is %d", e.Err, e.StatusCode)
 }
 
+
+// AssignErrorResponse takes error and status code and return an ErrResponse type 
 func AssignErrorResponse(err error, statuscode int) error {
 	return ErrResponse{
 		Err:        err,
@@ -36,6 +44,8 @@ func AssignErrorResponse(err error, statuscode int) error {
 	}
 }
 
+
+// GetResponse retrive DataTimeResponse and error if exist
 func (c *Client) GetResponse() (DataTimeResponse, error) {
 
 	req, err := http.NewRequest("GET", c.Url, nil)

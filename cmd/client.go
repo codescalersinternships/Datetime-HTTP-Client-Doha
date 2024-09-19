@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dohaelsawy/codescalers/datetime-client/pkg"
+	client "github.com/codescalersinternships/Datetime-HTTP-Client-Doha/httpClient"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,7 +29,7 @@ func main() {
 	flag.StringVar(&endpoint, "endpoint", "/datatime","the end point in url")
 	flag.Parse()
 
-	client := pkg.NewClient()
+	client := client.NewClient()
 
 	client.SetClientUrl(endpoint, port)
 

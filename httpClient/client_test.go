@@ -1,10 +1,8 @@
-package main
+package httpClient
 
 import (
 	"reflect"
 	"testing"
-
-	pkg "github.com/dohaelsawy/codescalers/datetime-client/pkg"
 )
 
 type MockClient struct {
@@ -15,7 +13,7 @@ func TestClient(t *testing.T) {
 
 	t.Run("default client configs", func(t *testing.T) {
 
-		client := pkg.NewClient()
+		client := NewClient()
 
 		expect := MockClient{
 			url: "http://localhost:8080/datetime",
@@ -28,7 +26,7 @@ func TestClient(t *testing.T) {
 
 	t.Run("client with .env configs", func(t *testing.T) {
 
-		client := pkg.NewClient()
+		client := NewClient()
 		err := client.LoadConfigFromENV()
 
 		expect := MockClient{

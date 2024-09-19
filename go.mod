@@ -1,6 +1,6 @@
 module github.com/codescalersinternships/Datetime-HTTP-Client-Doha
 
-go 1.21.0
+go 1.21
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0

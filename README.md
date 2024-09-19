@@ -8,12 +8,12 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
 ```
 - 2. import package :
 ```golang
-   import "github.com/dohaelsawy/codescalers/datetime-client/pkg"
+   import httpClient "github.com/dohaelsawy/codescalers/datetime-client/pkg"
 ```
 ### Functions
 - 1. first have instance from client with default values 
 ```golang
-   client := pkg.NewClient() // default url-> http://localhost:8080/datatime
+   client := httpClient.NewClient() // default url-> http://localhost:8080/datatime
 ```
 - 2. to set your values you have 3 options:
      - to load from env file
@@ -33,7 +33,7 @@ Create an HTTP client in Go that consumes the datetime server APIs implemented i
        ```
       - to pass your url with client declaration
         ```golang
-        client := pkg.NewClient(pkg.WithURL(YourUrl))
+        client := httpClient.NewClient(pkg.WithURL(YourUrl))
         ``` 
 - 3. gets your data from desire url
      ```golang

@@ -27,7 +27,7 @@ func TestClient(t *testing.T) {
 	t.Run("client with .env configs", func(t *testing.T) {
 
 		client := NewClient()
-		err := client.LoadConfigFromENV()
+		err := client.LoadConfigFromENV("../.env")
 
 		expect := MockClient{
 			url: "http://localhost:8090/datetime",

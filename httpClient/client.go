@@ -36,8 +36,8 @@ func WithURL(url string) options {
 }
 
 // LoadConfigFromENV load port and endpoint from env file and return error if exist
-func (c *Client) LoadConfigFromENV() error {
-	err := godotenv.Load("../.env")
+func (c *Client) LoadConfigFromENV(path string) error {
+	err := godotenv.Load(path)
 
 	if err != nil {
 		logrus.Errorf("error while loading .env file. Err: %s", err)

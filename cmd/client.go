@@ -29,11 +29,10 @@ func main() {
 	flag.StringVar(&endpoint, "endpoint", "/datatime", "the end point in url")
 	flag.Parse()
 
-	client := client.NewClient()
+	client := client.NewClient(client.WithEndpointAndPort(endpoint,port))
 
-	client.SetClientUrl(endpoint, port)
 
-	data, err := client.GetResponse()
+	data, err := client.GetDateTime()
 
 	if err != nil {
 		logrus.Error(err)

@@ -18,7 +18,7 @@ type Client struct {
 }
 
 // Generic http client for default values
-var (
+const (
 	TimeoutDefault  = 2 * time.Second
 	PortDefault     = "8080"
 	EndpointDefault = "datetime"
@@ -34,6 +34,14 @@ func WithURL(url string) options {
 		c.Url = url
 	}
 }
+
+// WithEndpointAndPort set endpoint and port option while initalizing a new client
+func WithEndpointAndPort(endpoint, port string) options {
+	return func(c *Client) {
+		c.Url = makeUrl(endpoint,port)
+	}
+}
+
 
 // LoadConfigFromENV load port and endpoint from env file and return error if exist
 func (c *Client) LoadConfigFromENV(path string) error {
@@ -71,14 +79,6 @@ func NewClient(opt ...options) *Client {
 	logrus.Printf("new client created %v\n", client)
 
 	return client
-}
-
-// SetClientUrl set endpoint and port for client url
-func (c *Client) SetClientUrl(endpoint, port string) {
-
-	c.Url = makeUrl(endpoint, port)
-
-	logrus.Println("create client url from flag parser")
 }
 
 func makeUrl(endpoint, port string) string {

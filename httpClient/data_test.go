@@ -17,7 +17,7 @@ func TestGetResponse(t *testing.T) {
 
 				w.Header().Set("Content-type", "text/plain")
 
-				w.WriteHeader(http.StatusOK)
+				w.WriteHeader(http.StatusInternalServerError)
 
 				_ , _ = w.Write([]byte(time.Now().Format(time.UnixDate)))
 			}),
@@ -25,16 +25,16 @@ func TestGetResponse(t *testing.T) {
 
 		client := NewClient(WithURL(mockserver.URL))
 
-		data, err := client.GetResponse()
+		data, err := client.GetDateTime()
 
 		expected := time.Now().Format(time.UnixDate)
 
-		if !reflect.DeepEqual(expected, data.DatewTime) {
-			t.Errorf("errorrrrrrr, shoud your response %s equal to mine %s", data.DatewTime, expected)
+		if !reflect.DeepEqual(expected, data.DateTime) {
+			t.Errorf("expected %v, got %v", expected, data.DateTime)
 		}
 
 		if err != nil {
-			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v", err)
+			t.Errorf("%v", err)
 		}
 
 	})
@@ -48,7 +48,7 @@ func TestGetResponse(t *testing.T) {
 				enc := json.NewEncoder(w)
 
 				err := enc.Encode(&DataTimeResponse{
-					DatewTime: time.Now().UTC().Format(time.UnixDate),
+					DateTime: time.Now().UTC().Format(time.UnixDate),
 				})
 
 				if err != nil {
@@ -59,18 +59,18 @@ func TestGetResponse(t *testing.T) {
 
 		client := NewClient(WithURL(mockserver.URL))
 
-		data, err := client.GetResponse()
+		data, err := client.GetDateTime()
 
 		expected := &DataTimeResponse{
-			DatewTime: time.Now().UTC().Format(time.UnixDate),
+			DateTime: time.Now().UTC().Format(time.UnixDate),
 		}
 
-		if !reflect.DeepEqual(expected.DatewTime, data.DatewTime) {
-			t.Errorf("errorrrrrrr, shoud your response %s equal to mine %s", data.DatewTime, expected.DatewTime)
+		if !reflect.DeepEqual(expected.DateTime, data.DateTime) {
+			t.Errorf("expected %v, got %v", expected.DateTime, data.DateTime)
 		}
 
 		if err != nil {
-			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v", err)
+			t.Errorf("%v", err)
 		}
 	})
 
@@ -78,10 +78,10 @@ func TestGetResponse(t *testing.T) {
 
 		client := NewClient(WithURL("http://localhost:8080/"))
 
-		_, err := client.GetResponse()
+		_, err := client.GetDateTime()
 
 		if err == nil {
-			t.Errorf("expect error %v, found nil", err)
+			t.Errorf("error is %v", err)
 		}
 
 	})

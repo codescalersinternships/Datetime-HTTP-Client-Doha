@@ -7,5 +7,5 @@ build:
 test:
 	go test -v ./...
 
-linter:
+lint:
 	golangci-lint run ./...

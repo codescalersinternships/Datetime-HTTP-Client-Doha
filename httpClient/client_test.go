@@ -20,7 +20,7 @@ func TestClient(t *testing.T) {
 		}
 
 		if !reflect.DeepEqual(expect.url, client.Url) {
-			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
+			t.Errorf("expected %v, got %v", expect.url, client.Url)
 		}
 	})
 
@@ -34,11 +34,11 @@ func TestClient(t *testing.T) {
 		}
 
 		if !reflect.DeepEqual(expect.url, client.Url) {
-			t.Errorf("errorrrrrrr, shoud your url %s equal to mine %s", client.Url, expect.url)
+			t.Errorf("expected %v, got %v", expect.url, client.Url)
 		}
 
 		if err != nil {
-			t.Errorf("errorrrrrrr, there is an erroooorrrrrr%v", err)
+			t.Errorf("error is %v", err)
 		}
 	})
 }
